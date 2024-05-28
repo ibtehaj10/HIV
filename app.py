@@ -107,7 +107,7 @@ you have to follow these cases according to the user needs
 
 ############    GET CHATS BY USER ID ##################
 def get_chats(id):
-    path = str(os.getcwd())+'\\chats\\'+id+'.json'
+    path = id
     isexist = os.path.exists(path)
     if isexist:
         data = pd.read_json(path)
@@ -122,7 +122,7 @@ def get_chats(id):
 
 ############### APPEND NEW CHAT TO USER ID JSON FILE #################
 def write_chat(new_data, id):
-    with open("chats/"+id+".json",'r+') as file:
+    with open(path,'r+') as file:
           # First we load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside emp_details
@@ -147,14 +147,14 @@ def check_user():
     if isexist:
         # try:
         print(path," found!")
-        write_chat({"role":"user","content":prompt},ids)
+        write_chat({"role":"user","content":prompt},path)
         # print()
         chats = get_chats(ids)
         print(chats)
         send = gpt(chats)
         reply = send.choices[0].message
         print("reply    ",reply.content)
-        write_chat({"role":"assistant","content":reply.content},ids)
+        write_chat({"role":"assistant","content":reply.content},path)
         return {"message":reply,"status":"OK"}
         # except:
         #     return {"message":"something went wrong!","status":"404"}
